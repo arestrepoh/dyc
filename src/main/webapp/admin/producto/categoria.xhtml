@@ -1,0 +1,119 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/template/common/commonLayout.xhtml">
+	<ui:define name="content">
+		<div id="table" align="center">
+			<h:form id="formCat">
+
+				<p:messages id="msgImp" autoUpdate="false" closable="true"
+					escape="true" showIcon="true" showDetail="true" showSummary="false" />
+
+				<p:commandButton title="#{lbl['lbl.nuevo']}"
+					value="#{lbl['lbl.nuevo']}" action="#{categoriaMB.add}"
+					icon="ui-icon-document" update="catDetail"
+					oncomplete="PF('catDialog').show() " />
+				<p:commandButton title="#{lbl['lbl.editar']}"
+					value="#{lbl['lbl.editar']}" icon="ui-icon-pencil"
+					pdate=":formCat:catDetail" oncomplete="PF('catDialog').show()"
+					update="catDetail, msgImp">
+				</p:commandButton>
+				<p:commandButton type="push" title="#{lbl['lbl.eliminar']}"
+					icon="ui-icon-trash" update="categorias, msgImp">
+					<p:confirm header="#{lbl['lbl.eliminar']}"
+						message="#{lbl['lbl.msg.eliminar']}" icon="ui-icon-alert" />
+				</p:commandButton>
+				<p:commandButton type="push" title="#{lbl['lbl.actualizar']}"
+					update="categorias" icon="ui-icon-refresh" />
+
+				<p:dialog header="Categoria Producto" widgetVar="catDialog"
+					modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+					<p:ajax event="close" update=":formCat:categorias" />
+					<p:outputPanel id="catDetail" style="text-align:center;">
+						<h:panelGrid columns="2">
+							<p:outputLabel for="codigo" value="Codigo: "
+								styleClass="ui-widget-content-panel" />
+							<p:inputText id="codigo" value="#{categoriaMB.categoria.codigo}"
+								disabled="#{not empty categoriaMB.categoria.codigo}">
+								<f:validateLength maximum="4" />
+							</p:inputText>
+							<p:outputLabel for="name" value="Nombre: " />
+							<p:inputText id="name" value="#{categoriaMB.categoria.nombre}"
+								styleClass="ui-widget-content-panel">
+								<f:validateLength maximum="45" />
+							</p:inputText>
+							<p:outputLabel for="description" value="Descripción: " />
+							<p:inputText id="description"
+								value="#{categoriaMB.categoria.descripcion}">
+								<f:validateLength maximum="150" />
+							</p:inputText>
+							<p:column />
+							<p:commandButton id="addUsers" value="Guardar" update="msgImp"
+								icon="ui-icon-disk" action="#{categoriaMB.save}" />
+						</h:panelGrid>
+					</p:outputPanel>
+				</p:dialog>
+
+				<p:dataTable id="categorias" var="cat"
+					value="#{categoriaMB.categorias}" rows="10" paginator="true"
+					emptyMessage="#{lbl['lbl.msg.table.empty']}"
+					paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15" style="width:60%"
+					selectionMode="single" selection="#{categoriaMB.categoria}"
+					rowKey="#{cat.codigo}">
+					<f:facet name="header">
+						<h:outputText value="Categorias de Productos" />
+					</f:facet>
+					<p:ajax event="rowSelect" />
+					<p:column headerText="Codigo" sortBy="#{cat.codigo}"
+						style="width:10%">
+						<h:outputText value="#{cat.codigo}" />
+					</p:column>
+
+					<p:column headerText="Nombre" sortBy="#{cat.nombre}"
+						style="width:20%">
+						<h:outputText value="#{cat.nombre}" />
+					</p:column>
+
+					<p:column headerText="Descripcion" style="width:50%">
+						<h:outputText value="#{cat.descripcion}" />
+					</p:column>
+					<!-- 					<p:column style="width:10%;text-align: center">
+						<p:commandButton update=":formCat:catDetail"
+							oncomplete="PF('catDialog').show()" icon="ui-icon-pencil"
+							title="Editar Categoria">
+							<f:setPropertyActionListener value="#{cat}"
+								target="#{categoriaMB.categoria}" />
+						</p:commandButton>
+						<p:commandButton icon="ui-icon-trash" title="Eliminar Categoria"
+							actionListener="#{categoriaMB.delete}">
+							<f:setPropertyActionListener value="#{cat}"
+								target="#{categoriaMB.categoria}" />
+							<p:confirm header="Elimianr" message="Esta seguro?"
+								icon="ui-icon-alert" />
+						</p:commandButton>
+					</p:column> -->
+				</p:dataTable>
+
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+					<p:commandButton value="Si" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="No" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+					<p:commandButton value="Si" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="No" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+
+			</h:form>
+
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

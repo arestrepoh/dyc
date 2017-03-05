@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<ui:composition>
+ 	<p:growl id="msgs" autoUpdate="false" for="formMenuR" showDetail="true" escape="true"
+		style="width: 40%;" />  
+	<h:form id="formMenuR">
+		<p:menubar model="#{menuHeader.model}">
+			<f:facet name="options">
+				<h:panelGrid columns="2">
+					<p:selectOneMenu value="#{temas.tema}" immediate="true"
+						editable="true" onchange="submit()"
+						valueChangeListener="#{temas.cambiar}">
+						<f:selectItems value="#{temas.themes}" />
+						<p:ajax listener="#{temas.cambiar}" />
+					</p:selectOneMenu>
+					<p:commandLink value="Cerrar Sesion"
+						action="#{menuHeader.cerrarSession}" ajax="true" />
+				</h:panelGrid>
+			</f:facet>
+		</p:menubar>
+	</h:form>
+</ui:composition>
+</html>
+
+

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<context:annotation-config />
+	<context:spring-configured />
+	<!-- Enable the configuration of transactional behavior based on annotations -->
+	<tx:annotation-driven transaction-manager="txManager" />
+	<!-- <context:component-scan base-package="co.com.dyc.web.manager.bean"/> 
+		<context:component-scan base-package="co.com.dyc.web.service.producto"/> 
+		<context:component-scan base-package="co.com.dyc.web.entities.producto"/> 
+		<context:component-scan base-package="co.com.dyc.web.dao"/> -->
+
+	<context:component-scan base-package="co.com.dys.web" />
+
+	<bean id="DataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/dyc" />
+		<property name="username" value="root" />
+		<property name="password" value="kerbero821215." />
+	</bean>
+
+	<!-- Session Factory Declaration -->
+	<bean id="SessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="DataSource" />
+		<!-- property name="configLocation" value="/WEB-INF/hibernate/hibernate.cfg.xml" 
+			/ -->
+		<property name="packagesToScan">
+			<list>
+				<value>co.com.dyc</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+	</bean>
+	<!-- Transaction Manager is defined -->
+	<bean id="txManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+	<bean
+		class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+
+	<!-- Admin Productos -->
+	<bean id="tipoProducto" class="co.com.dyc.web.entities.producto.TipoProducto" />
+	<bean id="tipoProductoDAO" class="co.com.dyc.web.dao.producto.TipoProductoDao" />
+	<bean id="tipoProductoService" class="co.com.dyc.web.service.producto.TipoProductoService" />
+
+	<bean id="categoria" class="co.com.dyc.web.entities.producto.Categoria" />
+	<bean id="categoriaDao" class="co.com.dyc.web.dao.producto.CategoriaDao" />
+	<bean id="categoriaService" class="co.com.dyc.web.service.producto.CategoriaService" />
+
+	<bean id="unidad" class="co.com.dyc.web.entities.producto.Unidad" />
+	<bean id="unidadDao" class="co.com.dyc.web.dao.producto.UnidadDao" />
+	<bean id="unidadService" class="co.com.dyc.web.service.producto.UnidadService" />
+
+	<bean id="impuesto" class="co.com.dyc.web.entities.producto.Impuesto" />
+	<bean id="impuestoDao" class="co.com.dyc.web.dao.producto.ImpuestoDao" />
+	<bean id="impuestoService" class="co.com.dyc.web.service.producto.ImpuestoService" />
+	
+	<bean id="impuestoprod" class="co.com.dyc.web.entities.producto.ImpuestoProd" />
+	<bean id="producto" class="co.com.dyc.web.entities.producto.Producto" />
+	<bean id="precio" class="co.com.dyc.web.entities.producto.Precio" />
+
+	<!-- Admin Seguridad -->
+	<bean id="usuario" class="co.com.dyc.web.entities.seguridad.Usuario" />
+	<bean id="usuarioDao" class="co.com.dyc.web.dao.seguridad.UsuarioDao" />
+	<bean id="usuarioService" class="co.com.dyc.web.service.seguridad.UsuarioService" />
+	<bean id="rol" class="co.com.dyc.web.entities.seguridad.Rol" />
+
+	<!-- General -->
+	<bean id="estado" class="co.com.dyc.web.entities.general.Estado" />
+	<bean id="menu" class="co.com.dyc.web.entities.general.Menu" />
+	<bean id="menuDao" class="co.com.dyc.web.dao.general.MenuDao" />
+	<bean id="menuService" class="co.com.dyc.web.service.general.MenuService" />
+</beans>

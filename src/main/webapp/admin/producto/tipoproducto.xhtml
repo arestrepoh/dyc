@@ -1,0 +1,56 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+</h:head>
+<h:body>
+	<ui:composition template="/template/common/commonLayout.xhtml">
+		<ui:define name="content">
+			<div align="center">
+				<h:form>
+					<p:growl id="msgs" showDetail="true" sticky="true" escape="true" />
+					<p:panel id="basic" header="Tipo Producto"
+						style="margin-bottom:10px; width: 280px;"
+						styleClass="ui-widget-header-panel">
+						<table>
+							<tr>
+								<td><p:outputLabel for="codigo" value="Código: "
+										styleClass="ui-widget-content-panel" /></td>
+								<td><p:inputText id="codigo"
+										value="#{tipoProductoMB.tipoProducto.codigo}"
+										styleClass="ui-widget-content-panel">
+									</p:inputText></td>
+							</tr>
+							<tr>
+								<td><p:outputLabel for="name" value="Nombre: "
+										styleClass="ui-widget-content-panel" /></td>
+								<td><p:inputText id="name"
+										value="#{tipoProductoMB.tipoProducto.nombre}"
+										styleClass="ui-widget-content-panel">
+										<f:validateLength maximum="15" />
+									</p:inputText></td>
+							</tr>
+							<tr>
+								<td><p:outputLabel for="description" value="Descripción: " /></td>
+								<td><p:inputText id="description"
+										value="#{tipoProductoMB.tipoProducto.descripcion}">
+										<f:validateLength maximum="45" />
+									</p:inputText></td>
+							</tr>
+							<tr align="right">
+								<td></td>
+								<td align="right"><p:commandButton id="addUsers"
+										value="Guardar" action="#{tipoProductoMB.guardar}"
+										ajax="false" /></td>
+							</tr>
+						</table>
+					</p:panel>
+				</h:form>
+			</div>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

@@ -1,0 +1,102 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/template/common/commonLayout.xhtml">
+	<ui:define name="content">
+		<h:form id="formTool">
+			<p:toolbar id="toolImp">
+				<p:toolbarGroup align="left">
+					<p:commandButton type="push" title="#{lbl['lbl.nuevo']}"
+						value="#{lbl['lbl.nuevo']}" action="#{impMB.add}"
+						icon="ui-icon-document" update="formTool, :frmImp:dataGrid" />
+					<p:separator />
+					<p:commandButton title="#{lbl['lbl.guardar']}" icon="ui-icon-disk"
+						action="#{impMB.save}"
+						update="formTool,:frmImp:dataGrid,:frmImp:tblImpuesto, :frmImp:msgImp">
+					</p:commandButton>
+					<p:commandButton type="push" title="#{lbl['lbl.eliminar']}"
+						icon="ui-icon-trash"
+						update="formTool,:frmImp:dataGrid,:frmImp:tblImpuesto, :frmImp:msgImp">
+						<p:confirm header="#{lbl['lbl.eliminar']}"
+							message="#{lbl['lbl.msg.eliminar']}" icon="ui-icon-alert" />
+					</p:commandButton>
+					<p:separator />
+					<p:commandButton type="push" title="#{lbl['lbl.actualizar']}"
+						update=":frmImp:tblImpuesto" icon="ui-icon-refresh" />
+				</p:toolbarGroup>
+			</p:toolbar>
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+				<p:commandButton value="Si" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="No" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
+		</h:form>
+		<h:form id="frmImp">
+			<p:messages id="msgImp" autoUpdate="false" closable="true"
+				escape="true" showIcon="true" showDetail="true" showSummary="false" />
+			<p:panel id="pnlImpuesto" header="#{lbl['lbl.title.impuesto']}">
+				<h:panelGrid id="dataGrid" columns="8">
+					<p:outputLabel id="cod" value="#{lbl['lbl.codigo']}" for="txtCod" />
+					<p:column />
+					<p:outputLabel id="nom" value="#{lbl['lbl.nombre']}" for="txtNom" />
+					<p:column />
+					<p:outputLabel for="descripcion" value="#{lbl['lbl.descripcion']}" />
+					<p:column />
+					<p:outputLabel id="val" value="#{lbl['lbl.valor']}" for="txtVal" />
+					<p:column />
+
+					<p:inputText id="txtCod" required="true"
+						value="#{impMB.impuesto.codigo}"
+						requiredMessage="#{lbl['lbl.field.obl']}">
+						<p:ajax event="blur" update="msgId" />
+					</p:inputText>
+					<p:message id="msgId" for="txtCod" display="icon" showDetail="true" />
+
+					<p:inputText id="txtNom" required="true"
+						value="#{impMB.impuesto.nombre}"
+						requiredMessage="#{lbl['lbl.field.obl']}">
+						<p:ajax event="blur" update="msgNom" />
+					</p:inputText>
+					<p:message id="msgNom" for="txtNom" display="icon"
+						showDetail="true" />
+
+					<p:inputText id="descripcion" value="#{impMB.impuesto.descripcion}" />
+					<p:column />
+					<p:inputNumber id="txtVal" required="true"
+						value="#{impMB.impuesto.valor}"
+						requiredMessage="#{lbl['lbl.field.obl']}" decimalPlaces="1">
+					</p:inputNumber>
+
+				</h:panelGrid>
+			</p:panel>
+			<p:dataTable id="tblImpuesto" var="imp" value="#{impMB.impuestos}"
+				rows="10" paginator="true"
+				emptyMessage="#{lbl['lbl.msg.table.empty']}"
+				paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15" selectionMode="single"
+				selection="#{impMB.impuesto}" rowKey="#{imp.codigo}">
+
+				<p:ajax event="rowSelect" update=":frmImp:dataGrid"
+					listener="#{impMB.onRowSelect}" />
+				<p:column headerText="#{lbl['lbl.codigo']}" sortBy="#{imp.codigo}"
+					style="width:10%">
+					<h:outputText value="#{imp.codigo}" />
+				</p:column>
+				<p:column headerText="#{lbl['lbl.nombre']}" sortBy="#{imp.nombre}"
+					style="width:20%">
+					<h:outputText value="#{imp.nombre}" />
+				</p:column>
+				<p:column headerText="#{lbl['lbl.descripcion']}" style="width:50%">
+					<h:outputText value="#{imp.descripcion}" />
+				</p:column>
+				<p:column headerText="#{lbl['lbl.valor']}" style="width:10%">
+					<h:outputText value="#{imp.valor}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

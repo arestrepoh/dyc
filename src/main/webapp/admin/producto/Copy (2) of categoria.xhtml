@@ -1,0 +1,112 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/template/common/commonLayout.xhtml">
+	<ui:define name="content">
+		<div id="table" align="center">
+			<h:form id="formCat">
+				<p:messages id="msgs" autoUpdate="true" showDetail="true"
+					style="width: 40%;" />
+				<p:dialog header="Categoria Producto" widgetVar="catDialog"
+					modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+					<p:outputPanel id="catDetail" style="text-align:center;">
+						<h:panelGrid columns="2">
+							<p:outputLabel for="codigo" value="Código: "
+								styleClass="ui-widget-content-panel" />
+							<p:inputText id="codigo" value="#{categoriaMB.categoria.codigo}"
+								styleClass="ui-widget-content-panel">
+							</p:inputText>
+							<p:outputLabel for="name" value="Nombre: "
+								styleClass="ui-widget-content-panel" />
+
+							<p:inputText id="name" value="#{categoriaMB.categoria.nombre}"
+								styleClass="ui-widget-content-panel">
+								<f:validateLength maximum="15" />
+							</p:inputText>
+							<p:outputLabel for="description" value="Descripción: " />
+							<p:inputText id="description"
+								value="#{categoriaMB.categoria.descripcion}">
+								<f:validateLength maximum="45" />
+							</p:inputText>
+							
+							<p:commandButton id="addUsers" value="Guardar" icon="ui-icon-disk"
+								action="#{categoriaMB.save}" ajax="true"
+								update=":formCat:categorias"
+								oncomplete="PF('catDialog').hide() " />
+						</h:panelGrid>
+					</p:outputPanel>
+				</p:dialog>
+
+				<p:dataTable id="categorias" var="cat"
+					value="#{categoriaMB.categorias}" editable="true" editMode="cell"
+					widgetVar="cellCats" rows="10"
+					filteredValue="#{categoriaMB.filterBycategorias}" paginator="true"
+					emptyMessage="No hay registros."
+					paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15">
+					<f:facet name="header" >
+    	       				<h:outputText value="Login" styleClass="height:500px"/>
+    	       				<p:commandButton id="nuevo" icon="ui-icon-pencil" 
+							actionListener="#{categoriaMB.add}" ajax="true"
+							update=":formCat:catDetail" oncomplete="PF('catDialog').show() "
+							style="float: right;" />
+					</f:facet>
+
+					<p:ajax event="cellEdit" listener="#{categoriaMB.onCellEdit}"
+						update=":formCat:categorias" />
+
+					<p:column headerText="Codigo" filterBy="#{cat.codigo}"
+						sortBy="#{cat.codigo}" filterMatchMode="contains">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{cat.codigo}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText id="modelInput" value="#{cat.codigo}"
+									style="width:96%" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="Nombre" filterBy="#{cat.nombre}"
+						sortBy="#{cat.nombre}" filterMatchMode="contains">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{cat.nombre}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{cat.nombre}" style="width:96%"
+									label="Nombre" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+
+					<p:column headerText="Descripcion" filterBy="#{cat.descripcion}"
+						filterMatchMode="contains">
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{cat.descripcion}" />
+							</f:facet>
+							<f:facet name="input">
+								<p:inputText value="#{cat.descripcion}" style="width:96%"
+									label="Descripcion" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column style="width:32px;text-align: center">
+						<p:commandButton update=":formCat:catDetail"
+							oncomplete="PF('catDialog').show()" icon="ui-icon-trash"
+							title="editar">
+							<f:setPropertyActionListener value="#{cat}"
+								target="#{categoriaMB.categoria}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<title>DyC Delicias</title>
+	<f:event listener="#{templateMB.verificarSession}" type="preRenderView" />
+
+	<style type="text/css">
+.ui-widget-header-panel,.ui-widget-header-panel {
+	font-size: 12px;
+}
+
+.ui-widget-content-panel,.ui-widget-content-panel {
+	font-size: 16px;
+}
+</style>
+</h:head>
+
+<h:body>
+	<div id="page">
+		<div id="header">
+			<ui:insert name="header">
+				<ui:include src="/template/common/commonHeader.xhtml" />
+			</ui:insert>
+		</div>
+		<div id="left">
+			<ui:insert name="rightnav">
+				<ui:include src="/template/common/commonLeft.xhtml" />
+			</ui:insert>
+		</div>
+		<div id="content">
+			<ui:insert name="content">
+				<ui:include src="/template/common/commoncontent.xhtml" />
+			</ui:insert>
+		</div>
+		<div id="footer">
+			<ui:insert name="footer">
+				<ui:include src="/template/common/commonFooter.xhtml" />
+			</ui:insert>
+		</div>
+	</div>
+</h:body>
+</html>

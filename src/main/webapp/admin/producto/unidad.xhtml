@@ -1,0 +1,116 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+</h:head>
+<h:body>
+	<ui:composition template="/template/common/commonLayout.xhtml">
+		<ui:define name="content">
+			<h:form id="formTool">
+				<p:toolbar id="toolUnidad">
+					<p:toolbarGroup align="left">
+						<p:commandButton type="push" title="#{lbl['lbl.nuevo']}"
+							icon="ui-icon-document" action="#{unidadMB.add}"
+							update="formTool, :frmUnidad:dataGrid" />
+						<p:separator />
+						<p:commandButton title="#{lbl['lbl.guardar']}" icon="ui-icon-disk"
+							action="#{unidadMB.save}" 
+							update="formTool,:frmUnidad:dataGrid,:frmUnidad:tblUnidad, :frmUnidad:msgUnidad">
+						</p:commandButton>
+						<p:commandButton type="push" title="#{lbl['lbl.eliminar']}"
+							icon="ui-icon-trash" action="#{unidadMB.delete}"
+							update="formTool,:frmUnidad:dataGrid,:frmUnidad:tblUnidad, :frmUnidad:msgUnidad">
+							<p:confirm header="#{lbl['lbl.eliminar']}"
+								message="#{lbl['lbl.msg.eliminar']}" icon="ui-icon-alert" />
+						</p:commandButton>
+						<p:separator />
+						<p:commandButton type="push" title="#{lbl['lbl.actualizar']}"
+							action="#{unidadMB.load}" update=":frmUnidad:tblUnidad"
+							icon="ui-icon-refresh" />
+					</p:toolbarGroup>
+				</p:toolbar>
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+					<p:commandButton value="Si" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="No" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+			</h:form>
+			<h:form id="frmUnidad">
+				<p:messages id="msgUnidad" autoUpdate="false" closable="true"
+					escape="true" showIcon="true" showDetail="true" showSummary="false" />
+				<div align="center">
+					<p:panel id="pnlUnidad" header="#{lbl['lbl.title.unidad']}">
+						<!-- Panel para ingreso de datos -->
+
+						<h:panelGrid id="dataGrid" columns="6">
+							<p:outputLabel id="cod" for="txtCod" value="#{lbl['lbl.codigo']}" />
+							<p:column />
+							<p:outputLabel id="nom" for="txtNom" value="#{lbl['lbl.nombre']}" />
+							<p:column />
+							<p:outputLabel id="desc" for="txtDesc"
+								value="#{lbl['lbl.descripcion']}" />
+							<p:column />
+							<p:inputText id="txtCod" disabled="#{not unidadMB.nuevoReg}"
+								value="#{unidadMB.unidad.codigo}" required="true"
+								requiredMessage="#{lbl['lbl.field.obl']}">
+								<f:validateLength maximum="150" for="txtCod" />
+								<p:ajax event="blur" update="msgId"
+									disabled="#{not empty unidadMB.unidad.codigo}" />
+								<p:ajax event="keyup" update=":formTool"
+									listener="#{unidadMB.edit}" />
+							</p:inputText>
+							<p:message id="msgId" for="txtCod" display="icon"
+								showDetail="true" />
+							<p:inputText id="txtNom" maxlength="45"
+								value="#{unidadMB.unidad.nombre}" required="true"
+								requiredMessage="#{lbl['lbl.field.obl']}">
+								<p:ajax event="blur" update="msgNom" />
+								<p:ajax event="keyup" update=":formTool"
+									listener="#{unidadMB.edit}" />
+							</p:inputText>
+							<p:message id="msgNom" for="txtNom" display="icon"
+								disabled="#{not empty unidadMB.unidad.codigo}" />
+							<p:inputText id="txtDesc" value="#{unidadMB.unidad.descripcion}">
+								<f:validateLength maximum="150" />
+							</p:inputText>
+
+						</h:panelGrid>
+
+						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+							<p:commandButton value="#{lbl['lbl.yes']}" type="button"
+								styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+							<p:commandButton value="#{lbl['lbl.no']}" type="button"
+								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						</p:confirmDialog>
+					</p:panel>
+					<!-- Tabla -->
+					<p:dataTable id="tblUnidad" var="un" value="#{unidadMB.unidades}"
+						rows="10" paginator="true"
+						emptyMessage="#{lbl['lbl.msg.table.empty']}"
+						paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15" selectionMode="single"
+						selection="#{unidadMB.unidad}" rowKey="#{un.codigo}">
+						<p:ajax event="rowSelect" update=":frmUnidad:dataGrid"
+							listener="#{unidadMB.onRowSelect}" />
+						<p:column headerText="#{lbl['lbl.codigo']}" sortBy="#{un.codigo}"
+							style="width:10%">
+							<h:outputText value="#{un.codigo}" />
+						</p:column>
+						<p:column headerText="#{lbl['lbl.nombre']}" sortBy="#{un.nombre}"
+							style="width:20%">
+							<h:outputText value="#{un.nombre}" />
+						</p:column>
+						<p:column headerText="#{lbl['lbl.descripcion']}" style="width:50%">
+							<h:outputText value="#{un.descripcion}" />
+						</p:column>
+					</p:dataTable>
+				</div>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

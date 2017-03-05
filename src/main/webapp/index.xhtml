@@ -1,0 +1,34 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Inicio de Sesion</title>
+</h:head>
+<h:body id="login">
+	<p:separator />
+	<div align="center">
+		<h:form id="formLogin">
+			<p:messages autoUpdate="true" showDetail="true" style="width: 40%;" />
+			<p:panel id="basic" header="Inicio de Sesión">
+				<h:panelGrid columns="2">
+					<p:outputLabel for="txtId" value="Usuario: " style="width:150px" />
+					<p:inputText id="txtId" value="#{login.usuario.id}" required="true"
+						style="width:150px">
+					</p:inputText>
+					<p:outputLabel for="txtPass" value="Clave: " style="width:150px" />
+					<p:password id="txtPass" value="#{login.usuario.password}"
+						required="true" style="width:150px">
+						<f:validateLength maximum="15" />
+					</p:password>
+					<p:column />
+					<p:commandButton id="cmdIngresar" value="Iniciar"
+						action="#{login.iniciarSession}" icon="ui-icon-key" ajax="true" />
+				</h:panelGrid>
+			</p:panel>
+		</h:form>
+	</div>
+	<p:separator />
+</h:body>
+</html>
